@@ -7,6 +7,8 @@ calculadora, apresentada em sala de aula.
 
 ![Calculator](/screenshots/flutter_calculator.jpg)
 
+Obs: botões de % e ⌫ estão sem funcionalidades.
+
 ## Widgets e Packages
 
 Os widgets utilizados foram basicamente a "stack" que estamos até o presente momento no treinamento.
