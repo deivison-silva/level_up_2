@@ -7,12 +7,8 @@ calculadora, apresentada em sala de aula.
 
 ![Calculator](/screenshots/flutter_calculator.jpg)
 
-Obs: botões de % e ⌫ estão sem funcionalidades.
-
 ## Widgets e Packages
 
 Os widgets utilizados foram basicamente a "stack" que estamos até o presente momento no treinamento.
 
 - Material, Scaffold, SafeArea, Column, Container, Expanded, Padding, Colors, GridView, GestureDetector e etc.
-
-- O package utilizado para facilitar o processo de grade da calculadora foi o: flutter_staggered_grid_view.

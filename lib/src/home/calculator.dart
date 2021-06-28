@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '/src/home/calculator_controller.dart';
+import '../shared/widgets/button_widget.dart';
 import '/src/shared/widgets/display_widget.dart';
-import '/src/shared/widgets/keyboard_widget.dart';
+import './calculator_controller.dart';
 
 class Calculator extends StatefulWidget {
   Calculator({Key? key}) : super(key: key);
@@ -12,18 +11,12 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
-  Controller _controller = Controller();
-
-  var operation = "";
-  var result = 0.0;
-  var a;
-  var b;
-  var currentOp;
+  CalculatorController _controller = CalculatorController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2F2D39),
+      backgroundColor: Color(0xFF2F2D3A),
       body: SafeArea(
         top: true,
         bottom: true,
@@ -31,102 +24,124 @@ class _CalculatorState extends State<Calculator> {
           children: [
             Expanded(
               flex: 1,
-              child: Display(operation: operation),
+              child: Display(result: _controller.result),
             ),
             SizedBox(height: 8.0),
             Expanded(
               flex: 3,
-              child: StaggeredGridView.countBuilder(
-                padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                crossAxisCount: 4,
-                mainAxisSpacing: 2.0,
-                crossAxisSpacing: 2.0,
-                itemCount: _controller.options.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    GestureDetector(
-                  onTap: () {
-                    final op = _controller.options[index];
-                    if (_controller.options[index] == '=') {
-                      operation =
-                          _controller.separatesFunctionIntoSmallerFunctions(
-                              operation, '*', '/');
-                      operation =
-                          _controller.separatesFunctionIntoSmallerFunctions(
-                              operation, '-', '+');
-                    } else {
-                      operation += _controller.options[index];
-                    }
-                    switch (op) {
-                      case "AC":
-                        {
-                          a = null;
-                          b = null;
-                          result = 0.0;
-                          operation = "";
-                          break;
-                        }
-                      case "+":
-                        {
-                          currentOp = op;
-                          break;
-                        }
-                      case "-":
-                        {
-                          currentOp = op;
-                          break;
-                        }
-                      case "*":
-                        {
-                          currentOp = op;
-                          break;
-                        }
-                      case "/":
-                        {
-                          currentOp = op;
-                          break;
-                        }
-                      case "=":
-                        {
-                          break;
-                        }
-                    }
-                    setState(() {});
-                  },
-                  child: Keyboard(
-                    text: _controller.options[index],
-                    colorButton: index == 18
-                        ? Color(0xFF7C5EFE)
-                        : index == 3
-                            ? Color(0xFFBFBFC1)
-                            : index == 7
-                                ? Color(0xFFBFBFC1)
-                                : index == 11
-                                    ? Color(0xFFBFBFC1)
-                                    : index == 15
-                                        ? Color(0xFFBFBFC1)
-                                        : Colors.black.withOpacity(0.4),
-                    textColor: index == 0
-                        ? Color(0xFF7C5EFE)
-                        : index == 1
-                            ? Color(0xFF7C5EFE)
-                            : index == 3
-                                ? Color(0xFF212121)
-                                : index == 7
-                                    ? Color(0xFF212121)
-                                    : index == 11
-                                        ? Color(0xFF212121)
-                                        : index == 15
-                                            ? Color(0xFF212121)
-                                            : Color(0xFFBFBFC1),
-                  ),
+              child: GridView(
+                padding: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 4.0,
+                  crossAxisSpacing: 4.0,
                 ),
-                staggeredTileBuilder: (index) {
-                  if (index == 18) {
-                    return StaggeredTile.count(2, 1);
-                  } else {
-                    return StaggeredTile.count(1, 1);
-                  }
-                },
+                children: [
+                  Button(
+                      text: 'AC',
+                      textColor: Color(0xFF7C5EFE),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.clear())),
+                  Button(
+                      text: '⌫',
+                      textColor: Color(0xFF7C5EFE),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.delete())),
+                  Button(
+                      text: '%',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.doMod())),
+                  Button(
+                      text: '*',
+                      textColor: Color(0xFF212121),
+                      colorButton: Color(0xFFBFBFC1),
+                      func: () => setState(() => _controller.doMul())),
+                  //
+                  Button(
+                      text: '7',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("7"))),
+                  Button(
+                      text: '8',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("8"))),
+                  Button(
+                      text: '9',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("9"))),
+                  Button(
+                      text: '/',
+                      textColor: Color(0xFF212121),
+                      colorButton: Color(0xFFBFBFC1),
+                      func: () => setState(() => _controller.doDiv())),
+                  //
+                  Button(
+                      text: '4',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("4"))),
+                  Button(
+                      text: '5',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("5"))),
+                  Button(
+                      text: '6',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("6"))),
+                  Button(
+                      text: '-',
+                      textColor: Color(0xFF212121),
+                      colorButton: Color(0xFFBFBFC1),
+                      func: () => setState(() => _controller.doSub())),
+                  //
+                  Button(
+                      text: '1',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("1"))),
+                  Button(
+                      text: '2',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("2"))),
+                  Button(
+                      text: '3',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("3"))),
+                  Button(
+                      text: '+',
+                      textColor: Color(0xFF212121),
+                      colorButton: Color(0xFFBFBFC1),
+                      func: () => setState(() => _controller.doSum())),
+                  //
+                  Button(
+                      text: '0',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("0"))),
+                  Button(
+                      text: '.',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("."))),
+                  Button(
+                      text: '00',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF1C1B21),
+                      func: () => setState(() => _controller.add("00"))),
+                  Button(
+                      text: '=',
+                      textColor: Color(0xFFBFBFC1),
+                      colorButton: Color(0xFF7C5EFE),
+                      func: () => setState(() => _controller.doEqual())),
+                ],
               ),
             ),
           ],
